@@ -31,7 +31,10 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +46,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.google',
-    'todo'
+    'todo',
+    'django_filters',
 
 ]
 
@@ -79,7 +83,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'todo_project.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -119,16 +122,25 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
+        'AUTH_PARAMS': {'access_type': 'offline'},
     }
 }
 
-LOGIN_REDIRECT_URL = '/admin/'
-LOGIN_URL = '/admin/'
+LOGIN_REDIRECT_URL = '/todo/'
+LOGIN_URL = '/todo/'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIALACCOUNT_STORE_TOKENS = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -153,3 +165,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# HASHID
+HASHID_FIELD_SALT = "yQP72ht2wPBQhRV2tnvTbQuOLbV9Fo643ha0Zu2hC0FFhGvaXin1lOztBeIYFhYuBE7p0pqne3w5H6wJMj6W_g"
