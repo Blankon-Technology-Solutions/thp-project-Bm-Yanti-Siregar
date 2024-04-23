@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
+    'daphne',
     'rest_framework',
     'rest_framework.authtoken',
     'django.contrib.admin',
@@ -44,10 +45,12 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.openid_connect',
     'allauth.socialaccount.providers.google',
     'todo',
     'django_filters',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +87,12 @@ TEMPLATES = [
 
 ASGI_APPLICATION = "todo_project.asgi.application"
 WSGI_APPLICATION = 'todo_project.wsgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # Use In-Memory channel layer for development
+    },
+}
 
 
 # Database
