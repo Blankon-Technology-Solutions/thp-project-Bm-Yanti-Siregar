@@ -44,11 +44,10 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.linkedin_oauth2',
+    'allauth.socialaccount.providers.openid_connect',
     'allauth.socialaccount.providers.google',
     'todo',
     'django_filters',
-
 ]
 
 MIDDLEWARE = [
@@ -82,7 +81,10 @@ TEMPLATES = [
     },
 ]
 
+
+ASGI_APPLICATION = "todo_project.asgi.application"
 WSGI_APPLICATION = 'todo_project.wsgi.application'
+
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -117,9 +119,20 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
-# Update import statement for LinkedIn provider
 SOCIALACCOUNT_PROVIDERS = {
+    "openid_connect": {
+        "APPS": [
+            {
+                "provider_id": "linkedin-server",
+                "name": "LinkedIn OIDC",
+                "client_id": config('LINKEDIN_OIDC_CLIENT_ID'),
+                "secret": config('LINKEDIN_OIDC_CLIENT_SECRET'),
+                "settings": {
+                    "server_url": "https://www.linkedin.com/oauth",
+                },
+            }
+        ]
+    },
     'google': {
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'offline'},
